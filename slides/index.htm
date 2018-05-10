@@ -391,6 +391,8 @@ count: false
 
 ## Asynchronous Traversal
 
+*Questions*
+
 - How does a node know when no more updates are en route?
 
 - How do we detect when the entire traversal is completed?
@@ -401,18 +403,146 @@ count: false
 
 ## Asynchronous Traversal
 
-*The algorithm*
+*Our poposal*
 
-1. Perform rounds of breadth-first search with incremental depth.
+- Perform rounds of breadth-first search with incremental depth.
 
-2. On round *k*, propagate *req* messages up to *k* steps away from the root node.
+- Round *k+1* starts only after *k* is completed.
+
+- Use synchronization locally, but keep the algorithm async at a global level.
+
+<!-- 2. On round *k*, propagate *req* messages up to *k* steps away from the root node.
 
 3. When *req* reaches a frontier node (hoplimit = 0), send *ack* back to the sender.
 
 4. When *ack* is received from all child nodes, send *ack* back to parent.
 
-5. When root node receives *ack* from all children,
+5. When root node receives *ack* from all children, start next round.
+ -->
 
+---
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_1.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_2.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_3.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_4.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_5.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_6.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_7.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_8.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Example*
+
+<center>
+	<img src="figures/fig_algo_9.svg" style="width: 100%; position: relative; bottom: 40px;"/>
+</center>
+
+---
+
+## Asynchronous Traversal
+
+- The number of discovered nodes (in each round) is sent back in `ack` messages.
+
+- The algorithm terminates when no more new nodes are discovered.
+
+---
+
+## Conclusion
+
+- We presented sync and async methods to network traversal in hardware.
+
+- The async algorithm scales better but is more complex.
+
+- Are there simpler ways of performing async network traversal?
 
 	</textarea>
 	<script src="https://remarkjs.com/downloads/remark-latest.min.js">
