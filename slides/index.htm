@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Asynchronous Network Traversal for Computational Drug Discovery
+</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<style type="text/css">
+
+		.subslide {
+			color: rgba(0,0,0,0.2);
+			vertical-align: bottom;
+			margin-left: 10px;
+			font-size: 0.8em;
+		}
+
+		/* TODO: Figure out the best way to create custom versions of the template */
+		body > div.remark-slides-area > div.remark-slide-container.remark-visible > div.remark-slide-scaler > div > div {
+			padding-left: 50px !important;
+			padding-right: 50px !important;
+		}
+
+		#logos {
+			text-align: center;
+		}
+
+		#logos img {
+			width: 25% !important;
+		}
+
+	</style>
+  </head>
+  <body>
+	<textarea id="source">
+
+class: center, middle
+
+<style type="text/css">
+	sup {
+		font-size: 0.65em;
+	}
+</style>
+
+<h1 style="font-size: 36px; line-height: 125%; margin-top: 220px;">
+Asynchronous Network Traversal for Computational Drug Discovery
+</h1>
+
+Ghaith Tarawneh<sup>1</sup>, Alessandro de Gennaro<sup>1</sup>, Jonny Wray<sup>2</sup>,<br/>
+Andrey Mokhov<sup>1</sup>.red[* ] and Alex Yakovlev<sup>1</sup>
+
+<sup>1</sup> Newcastle University, UK
+<br/>
+<sup>2</sup> e-Therapeutics, UK
+
+.spacer[ - ]
+
+.venue[ASYNC 2018 - Vienna, 13<sup>th</sup> May 2018]
+
+<img src="logos/logo-epsrc.svg" style="width: 200pt; position: absolute; top: 40pt; left: 40pt;"/>
+<img src="logos/logo-poets-underlined.svg" style="width: 220pt; position: absolute; top: 5pt; right: 40pt;"/>
+
+---
+
+layout: true
+
+<img src="logos/logo-poets.svg" class="grayscale" style="width: 120pt; position: absolute; top: 16pt; right: 40pt;"/>
+
+.footer.venue[ASYNC 2018 - Vienna, 13<sup>th</sup> May 2018]
+
+---
+
+## POETS Project Team
+
+<div id="logos">
+<img src="logos/logo-cambridge.svg"/>
+<img src="logos/logo-arm.svg"/>
+<img src="logos/logo-ccfe.jpg"/>
+<img src="logos/logo-imperial.svg"/>
+<img src="logos/logo-etx.jpg"/>
+<img src="logos/logo-cuhk.svg"/>
+<img src="logos/logo-newcastle.svg"/>
+<img src="logos/logo-img.jpg"/>
+<img src="logos/logo-maxeler.svg"/>
+<img src="logos/logo-southampton.svg"/>
+<img src="logos/logo-nmi.png"/>
+<img src="logos/logo-nag.svg"/>
+</div>
+
+---
+
+## Outline
+
+.active.circle[1] .big[Computational drug discovery]
+.active.vruler[ ]
+.active.circle[2] .big[Performing network traversal in hardware]
+.active.vruler[ ]
+.active.circle[3] .big[Synchronous traversal]
+.active.vruler[ ]
+.active.circle[4] .big[Asynchronous traversal]
+
+---
+
+## Introduction
+
+- Many applications in *network science* involve the processing of very large
+networks.
+
+- For example, in *computational drug discovery*, candidate drugs are
+identified by running traversal operations on a protein-protein interaction
+networks (interactomes) that contain 10s of thousands of nodes.
+
+- These analyses continue to be held back by the general inefficiency of
+commodity computers at traversing large networks.
+
+- We are investigating methods to perform this process in hardware.
+
+---
+
+<style type="text/css">
+	.fdl-slide {
+		position: relative;
+		bottom: 40px;
+		height: 37.5vh;
+	}
+</style>
+
+## Computational Drug Discovery
+
+*Protein-Protein Interaction Networks*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_4.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Protein-Protein Interaction Networks*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_5.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Protein-Protein Interaction Networks*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_6.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Drug Impact Analysis*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_7.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Drug Impact Analysis*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_8.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Drug Impact Analysis*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_9.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Drug Impact Analysis*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_10.svg"/>
+</center>
+
+---
+
+count: false
+
+## Computational Drug Discovery
+
+*Drug Impact Analysis*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_11.svg"/>
+</center>
+
+---
+<style type="text/css">
+	.shiftright {
+    	margin-left: 40px;
+	}
+</style>
+
+## Synchronous Traversal .subslide[(1/3)]
+
+We proposed a (synchronous) method to accelerate network traversal on FPGAs..red[ * ]
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_14.svg"/>
+</center>
+
+.footnote[
+
+.red[ * ] Mokhov, Andrey, et al "Language and hardware acceleration backend
+for graph processing" Specification and Design Languages (FDL), 2017 Forum on
+IEEE, 2017
+
+]
+
+---
+
+## Synchronous Traversal .subslide[(2/3)]
+
+*Bread-first search on FPGAs*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_15.svg"/>
+</center>
+
+---
+
+count: false
+
+## Synchronous Traversal .subslide[(2/3)]
+
+*Bread-first search on FPGAs*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_16.svg"/>
+</center>
+
+---
+
+count: false
+
+## Synchronous Traversal .subslide[(2/3)]
+
+*Bread-first search on FPGAs*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_17.svg"/>
+</center>
+
+---
+
+count: false
+
+## Synchronous Traversal .subslide[(2/3)]
+
+*Bread-first search on FPGAs*
+
+<center>
+	<img class="fdl-slide" src="figures/fdl_slide_18.svg"/>
+</center>
+
+---
+
+## Synchronous Traversal .subslide[(3/3)]
+
+*Performance and Scalability*
+
+<center>
+	<img src="figures/fdl_slide_21.svg" style="width: 80%;"/>
+</center>
+
+- Up to *2505x* faster than software but does not scale well beyond ~ 3k nodes.
+
+---
+
+## Asynchronous Traversal
+
+*Motivation* : go beyond a single FPGA.
+
+*Difficulty* : traversal events can proceed in any order.
+
+---
+
+## Asynchronous Traversal
+
+*Why things get difficult with no synchronization*
+
+- Assume we want to find the shortest distance between `n1` and `n5` in this network.
+
+<center>
+	<img src="figures/fig_async_1.svg" style="width: 80%;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Why things get difficult with no synchronization*
+
+- Assume we want to find the shortest distance between `n1` and `n5` in this network.
+
+<center>
+	<img src="figures/fig_async_2.svg" style="width: 80%;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Why things get difficult with no synchronization*
+
+- Assume we want to find the shortest distance between `n1` and `n5` in this network.
+
+<center>
+	<img src="figures/fig_async_3.svg" style="width: 80%;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Why things get difficult with no synchronization*
+
+- Assume we want to find the shortest distance between `n1` and `n5` in this network.
+
+<center>
+	<img src="figures/fig_async_4.svg" style="width: 80%;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Why things get difficult with no synchronization*
+
+- Assume we want to find the shortest distance between `n1` and `n5` in this network.
+
+<center>
+	<img src="figures/fig_async_5.svg" style="width: 80%;"/>
+</center>
+
+---
+
+count: false
+
+## Asynchronous Traversal
+
+*Why things get difficult with no synchronization*
+
+- Assume we want to find the shortest distance between `n1` and `n5` in this network.
+
+<center>
+	<img src="figures/fig_async_6.svg" style="width: 80%;"/>
+</center>
+
+---
+
+## Asynchronous Traversal
+
+- How does a node know when no more updates are en route?
+
+- How do we detect when the entire traversal is completed?
+
+- We describe one way of doing it and invite you to suggest improvements.
+
+---
+
+## Asynchronous Traversal
+
+*The algorithm*
+
+1. Perform rounds of breadth-first search with incremental depth.
+
+2. On round *k*, propagate *req* messages up to *k* steps away from the root node.
+
+3. When *req* reaches a frontier node (hoplimit = 0), send *ack* back to the sender.
+
+4. When *ack* is received from all child nodes, send *ack* back to parent.
+
+5. When root node receives *ack* from all children,
+
+
+	</textarea>
+	<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+	</script>
+	<script>
+	  var slideshow = remark.create({ratio: '4:3', highlightStyle: 'atom-one-light'});
+	</script>
+  </body>
+</html>
+
