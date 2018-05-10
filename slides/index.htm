@@ -243,7 +243,7 @@ IEEE, 2017
 
 ## Synchronous Traversal .subslide[(2/3)]
 
-*Bread-first search on FPGAs*
+*Breadth-first search on FPGAs*
 
 <center>
 	<img class="fdl-slide" src="figures/fdl_slide_15.svg"/>
@@ -255,7 +255,7 @@ count: false
 
 ## Synchronous Traversal .subslide[(2/3)]
 
-*Bread-first search on FPGAs*
+*Breadth-first search on FPGAs*
 
 <center>
 	<img class="fdl-slide" src="figures/fdl_slide_16.svg"/>
@@ -267,7 +267,7 @@ count: false
 
 ## Synchronous Traversal .subslide[(2/3)]
 
-*Bread-first search on FPGAs*
+*Breadth-first search on FPGAs*
 
 <center>
 	<img class="fdl-slide" src="figures/fdl_slide_17.svg"/>
@@ -279,7 +279,7 @@ count: false
 
 ## Synchronous Traversal .subslide[(2/3)]
 
-*Bread-first search on FPGAs*
+*Breadth-first search on FPGAs*
 
 <center>
 	<img class="fdl-slide" src="figures/fdl_slide_18.svg"/>
@@ -299,7 +299,7 @@ count: false
 
 ---
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(1/6)]
 
 *Motivation* : go beyond a single FPGA.
 
@@ -307,7 +307,7 @@ count: false
 
 ---
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(2/6)]
 
 *Why things get difficult with no synchronization*
 
@@ -321,7 +321,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(2/6)]
 
 *Why things get difficult with no synchronization*
 
@@ -335,7 +335,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(2/6)]
 
 *Why things get difficult with no synchronization*
 
@@ -349,7 +349,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(2/6)]
 
 *Why things get difficult with no synchronization*
 
@@ -363,7 +363,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(2/6)]
 
 *Why things get difficult with no synchronization*
 
@@ -377,7 +377,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(2/6)]
 
 *Why things get difficult with no synchronization*
 
@@ -389,40 +389,38 @@ count: false
 
 ---
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(3/6)]
 
-*Questions*
+*Questions:*
 
-- How does a node know when no more updates are en route?
+- How can a node tell when no more updates are en route?
 
-- How do we detect when the entire traversal is completed?
+- How do we detect when the entire traversal is complete?
+
+--
+
+*Answers:*
 
 - We describe one way of doing it and invite you to suggest improvements.
 
 ---
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(4/6)]
 
-*Our poposal*
-
-- Perform rounds of breadth-first search with incremental depth.
-
-- Round *k+1* starts only after *k* is completed.
+*Our poposal*:
 
 - Use synchronization locally, but keep the algorithm async at a global level.
 
-<!-- 2. On round *k*, propagate *req* messages up to *k* steps away from the root node.
+- Perform rounds of breadth-first search with incremental depth.
 
-3. When *req* reaches a frontier node (hoplimit = 0), send *ack* back to the sender.
+- Round *k+1* starts only after round *k* is completed.
 
-4. When *ack* is received from all child nodes, send *ack* back to parent.
-
-5. When root node receives *ack* from all children, start next round.
- -->
+- This way we guarantee that all traversal operations belong to the same round
+everywhere in the network at any point in time.
 
 ---
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -434,7 +432,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -446,7 +444,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -458,7 +456,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -470,7 +468,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -482,7 +480,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -494,7 +492,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -506,7 +504,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -518,7 +516,7 @@ count: false
 
 count: false
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(5/6)]
 
 *Example*
 
@@ -528,21 +526,23 @@ count: false
 
 ---
 
-## Asynchronous Traversal
+## Asynchronous Traversal .subslide[(6/6)]
 
-- The number of discovered nodes (in each round) is sent back in `ack` messages.
+*Termination*
 
-- The algorithm terminates when no more new nodes are discovered.
+- The number of newly discovered nodes `d` is tallied back by `ack` messages.
+
+- The algorithm terminates when a round finishes and `d=0`.
 
 ---
 
 ## Conclusion
 
-- We presented sync and async methods to network traversal in hardware.
+- We presented sync and async methods to traverse networks in hardware.
 
 - The async algorithm scales better but is more complex.
 
-- Are there simpler ways of performing async network traversal?
+- Are there simpler or more performant ways to traverse networks asynchronously?
 
 	</textarea>
 	<script src="https://remarkjs.com/downloads/remark-latest.min.js">
@@ -552,4 +552,3 @@ count: false
 	</script>
   </body>
 </html>
-
