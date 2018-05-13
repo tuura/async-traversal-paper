@@ -86,7 +86,7 @@ layout: true
 <img src="logos/logo-nag.svg"/>
 </div>
 
----
+<!-- ---
 
 ## Outline
 
@@ -96,23 +96,24 @@ layout: true
 .active.vruler[ ]
 .active.circle[3] .big[Synchronous traversal]
 .active.vruler[ ]
-.active.circle[4] .big[Asynchronous traversal]
+.active.circle[4] .big[Asynchronous traversal] -->
 
 ---
 
 ## Introduction
 
-- Many applications in *network science* involve the processing of very large
+- Many applications in *network science* involve processing of very large
 networks.
 
 - For example, in *computational drug discovery*, candidate drugs are
-identified by running traversal operations on a protein-protein interaction
-networks (interactomes) that contain 10s of thousands of nodes.
+identified by running millions of network traversal operations on
+protein-protein interaction networks (interactomes) that contain thousands of
+nodes.
 
 - These analyses continue to be held back by the general inefficiency of
 commodity computers at traversing large networks.
 
-- We are investigating methods to perform this process in hardware.
+- We are investigating methods to accelerate network analysis in hardware.
 
 ---
 
@@ -131,10 +132,10 @@ commodity computers at traversing large networks.
 *Protein-Protein Interaction Networks*
 
 <center>
-	<img class="fdl-slide" src="figures/fdl_slide_4.svg"/>
+	<img class="fdl-slide" src="figures/fdl_slide_5.svg"/>
 </center>
 
----
+<!-- ---
 
 count: false
 
@@ -144,7 +145,7 @@ count: false
 
 <center>
 	<img class="fdl-slide" src="figures/fdl_slide_5.svg"/>
-</center>
+</center> -->
 
 ---
 
@@ -299,15 +300,15 @@ count: false
 
 ## Asynchronous Traversal .subslide[(1/6)]
 
-*Motivation* : go beyond a single FPGA.
+*Motivation:* go beyond a single FPGA to analyse larger networks.
 
-*Difficulty* : traversal events can proceed in any order.
+*Difficulty:* network traversal events can proceed in any order.
 
 ---
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - Assume we want to find the shortest distance between `n1` and `n5` in this network.
 
@@ -321,7 +322,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - Assume we want to find the shortest distance between `n1` and `n5` in this network.
 
@@ -335,7 +336,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - Assume we want to find the shortest distance between `n1` and `n5` in this network.
 
@@ -349,7 +350,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - Assume we want to find the shortest distance between `n1` and `n5` in this network.
 
@@ -363,7 +364,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - Assume we want to find the shortest distance between `n1` and `n5` in this network.
 
@@ -377,7 +378,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - Assume we want to find the shortest distance between `n1` and `n5` in this network.
 
@@ -391,7 +392,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - and in larger networks ...
 
@@ -405,7 +406,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - and in larger networks ...
 
@@ -419,7 +420,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - and in larger networks ...
 
@@ -433,7 +434,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - and in larger networks ...
 
@@ -447,7 +448,7 @@ count: false
 
 ## Asynchronous Traversal .subslide[(2/6)]
 
-*Why things get difficult with no synchronization*
+*Why things get difficult with no synchronisation*
 
 - and in larger networks ...
 
@@ -465,8 +466,6 @@ count: false
 
 - How do we detect when the entire traversal is complete?
 
---
-
 *Answers:*
 
 - We describe one way of doing it and invite you to suggest improvements.
@@ -475,9 +474,9 @@ count: false
 
 ## Asynchronous Traversal .subslide[(4/6)]
 
-*Our poposal*:
+*Our proposal*:
 
-- Use synchronization locally, but keep the algorithm async at a global level.
+- Use synchronisation locally, but keep the algorithm async at a global level.
 
 - Perform rounds of breadth-first search with incremental depth.
 
@@ -596,11 +595,19 @@ count: false
 
 ## Asynchronous Traversal .subslide[(6/6)]
 
+*Cost*
+
+- In the worst case we need *D* rounds, where *D* is the network diameter.
+
+- Round *K* involves sequences of *K* handshakes.
+
+- The overall cost of network traversal is *1 + 2 + ... + D = O(D<sup>2</sup>)*.
+
 *Termination*
 
-- The number of newly discovered nodes `d` is tallied back by `ack` messages.
+- The number of newly discovered nodes is tallied back via `ack` messages.
 
-- The algorithm terminates when a round finishes and `d=0`.
+- The algorithm terminates when no new nodes are discovered.
 
 ---
 
@@ -610,7 +617,7 @@ count: false
 
 - The async algorithm scales better but is more complex.
 
-- Are there simpler or more performant ways to traverse networks asynchronously?
+- Are there simpler or faster ways to traverse networks asynchronously?
 
 	</textarea>
 	<script src="https://remarkjs.com/downloads/remark-latest.min.js">
